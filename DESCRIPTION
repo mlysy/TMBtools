@@ -1,0 +1,14 @@
+Package: RcppTMBTest
+Type: Package
+Title: Example of Co-Existing 'Rcpp' and 'TMB' Source Code
+Version: 1.0
+Date: 2019-03-17
+Authors@R: person("Martin", "Lysy",
+                  email = "mlysy@uwaterloo.ca", role = c("aut", "cre"))
+Description: A test package containing source code linked with 'Rcpp' along with a few 'TMB' models.  Tested to pass 'R CMD check --as-cran' on Unix and Windows environments.
+License: GPL (>= 2)
+Imports: Rcpp (>= 1.0.0), TMB
+LinkingTo: Rcpp, RcppEigen, TMB
+Suggests: testthat
+RoxygenNote: 6.1.1
+Encoding: UTF-8
