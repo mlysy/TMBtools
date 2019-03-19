@@ -5,7 +5,7 @@ test_that("gamma_ADFun calculates correct negloglik, gradient, and hessian", {
   nll_fun <- function(theta, y) {
     -sum(dgamma(x = y, shape = theta[1], scale = theta[2], log = TRUE))
   }
-  nreps <- 100
+  nreps <- 20
   for(ii in 1:nreps) {
     # simulate data/parameters
     n <- sample(10:100, 1)

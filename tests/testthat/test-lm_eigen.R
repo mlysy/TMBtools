@@ -2,7 +2,7 @@
 context("lm_eigen")
 
 test_that("lm_eigen calculates correct regression output", {
-  nreps <- 100
+  nreps <- 20
   for(ii in 1:nreps) {
     n <- sample(10:100, 1)
     p <- sample(3:6,1)

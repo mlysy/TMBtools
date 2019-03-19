@@ -6,7 +6,7 @@ test_that("norm_ADFun calculates correct negloglik, gradient, and hessian", {
   nll_fun <- function(theta, y) {
     -sum(dnorm(x = x, mean = theta[1], sd = theta[2], log = TRUE))
   }
-  nreps <- 100
+  nreps <- 20
   for(ii in 1:nreps) {
     # simulate data/parameters
     n <- sample(10:100, 1)
