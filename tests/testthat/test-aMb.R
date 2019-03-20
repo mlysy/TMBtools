@@ -66,7 +66,7 @@ for(hname in hnames) {
       dcl <- get_dclists(hname, a, M, b, n)
       aMb_obj <- TMB::MakeADFun(data = dcl$data,
                                 parameters = dcl$parameters,
-                                DLL = "TMBExports", silent = TRUE)
+                                DLL = "TMBMain", silent = TRUE)
       # in R
       ll1 <- do.call(aMb_fun, dcl$nl)
       gg1 <- do.call(numDeriv::grad, c(func = aMb_fun_pd, dcl$gh, n = n))

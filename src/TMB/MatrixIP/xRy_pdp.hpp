@@ -1,16 +1,16 @@
-#ifndef xRz_pdd_h
-#define xRz_pdd_h 1
+#ifndef xRy_pdp_hpp
+#define xRy_pdp_hpp 1
 
-#include "MatrixIP.h"
+#include "MatrixIP.hpp"
 
 #undef TMB_OBJECTIVE_PTR
 #define TMB_OBJECTIVE_PTR obj
 template <class Type>
-Type xRz_pdd(objective_function<Type>* obj) {
+Type xRy_pdp(objective_function<Type>* obj) {
   PARAMETER_VECTOR(x);
-  DATA_VECTOR(z);
+  PARAMETER_VECTOR(y);
   DATA_MATRIX(R);
-  return MatrixIP(x, z, R);
+  return MatrixIP(x, y, R);
 }
 #undef TMB_OBJECTIVE_PTR
 #define TMB_OBJECTIVE_PTR this

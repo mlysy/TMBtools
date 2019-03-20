@@ -1,7 +1,7 @@
-#ifndef ySx_pdp_h
-#define ySx_pdp_h 1
+#ifndef ySx_pdp_hpp
+#define ySx_pdp_hpp 1
 
-#include "MatrixIP.h"
+#include "MatrixIP.hpp"
 
 #undef TMB_OBJECTIVE_PTR
 #define TMB_OBJECTIVE_PTR obj

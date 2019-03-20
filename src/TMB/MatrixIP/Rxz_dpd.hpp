@@ -1,7 +1,7 @@
-#ifndef Rxz_dpd_h
-#define Rxz_dpd_h 1
+#ifndef Rxz_dpd_hpp
+#define Rxz_dpd_hpp 1
 
-#include "MatrixIP.h"
+#include "MatrixIP.hpp"
 
 #undef TMB_OBJECTIVE_PTR
 #define TMB_OBJECTIVE_PTR obj

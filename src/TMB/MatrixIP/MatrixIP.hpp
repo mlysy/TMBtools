@@ -1,7 +1,7 @@
-/// @file MatrixIP.h
+/// @file MatrixIP.hpp
 
-#ifndef MatrixIP_h
-#define MatrixIP_h 1
+#ifndef MatrixIP_hpp
+#define MatrixIP_hpp 1
 
 /// Matrix-weighted inner product.
 ///
