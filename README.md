@@ -80,8 +80,10 @@ R CMD check --as-cran RcppTMBTest_1.0.tar.gz
 		```
 		That is, the tests indicate that TMB does not get confused between `DATA_*` and `PARAMETER*` arguments across `.hpp` model files, i.e., `DATA_VECTOR(x)` in `ModelA` and `PARAMETER_MATRIX(x)` in `ModelB`, nor does `TMB::MakeADFun` expect you to specify the names of all arguments to all models at once, etc.
 		
-		**Conclusion:** It seems that there is very little advantage to using Method 1 for multiple TMB models, but a considerable advantage to using Method 2.  Pending the failure of tests I have not run yet (see below), it seems that Method 2 is uniformly preferable to Method 1.
+		**Conclusion:** It seems that there is very little advantage to using Method 1 for multiple TMB models, but a considerable advantage to using Method 2.  Pending the failure of tests I have not run yet (see [below](#todo)), it seems that Method 2 is uniformly preferable to Method 1.
 - The Rcpp shared library automatically gets the name of the package (in this case, RcppTMBTest), whereas the TMB shared library(ies) should be called something else.  I have found that in order to avoid the CRAN check note [`Foreign function call to a different package`](https://stackoverflow.com/questions/24150185/foreign-function-calls-to-a-different-package-note), in the `NAMESPACE` file, it is necessary that *the `useDynLib` call to RcppTMBTest come first*, i.e., before any of those to the TMB shared libraries.  This package uses [roxygen2](https://CRAN.R-project.org/package=roxygen2/vignettes/roxygen2.html) to create the documentation, and provides an example of how to do this regardless of alphabetical order in the file `R/RcppTMBTest-package.R`.
-- **TODO:** 
-    - Run tests with `openMP` enabled.
-	- Check other `DATA_*` and `PARAMETER*` macros, although it seems unlikely now that there will be an issue with these.  Perhaps focus on `DATA_UPDATE`?
+
+### TODO
+
+- Run tests with `OpenMP` enabled.
+- Check other `DATA_*` and `PARAMETER*` macros, although it seems unlikely now that there will be an issue with these.  Perhaps focus on `DATA_UPDATE`?
