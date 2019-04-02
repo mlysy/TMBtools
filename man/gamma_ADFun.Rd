@@ -2,7 +2,7 @@
 % Please edit documentation in R/gamma_ADFun.R
 \name{gamma_ADFun}
 \alias{gamma_ADFun}
-\title{\code{TMB::ADFun} for the gamma likelihood.}
+\title{Create a \code{TMB::ADFun} object for the gamma likelihood.}
 \usage{
 gamma_ADFun(x)
 }
@@ -10,8 +10,8 @@ gamma_ADFun(x)
 \item{x}{Vector of observations.}
 }
 \value{
-A list as returned by \code{TMB::MakeADFun} representing the negative loglikelihood of a gamma distribution
+A list as returned by \code{TMB::MakeADFun} representing the negative loglikelihood of a gamma distribution.
 }
 \description{
-\code{TMB::ADFun} for the gamma likelihood.
+Create a \code{TMB::ADFun} object for the gamma likelihood.
 }

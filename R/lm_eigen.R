@@ -1,4 +1,4 @@
-#' Calculate some regression output using \code{RcppEigen}.
+#' Calculate some regression output using \pkg{RcppEigen}.
 #'
 #' @param y Response vector.
 #' @param X Design matrix, including intercept column if desired.

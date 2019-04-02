@@ -7,7 +7,7 @@ Authors@R: person("Martin", "Lysy",
                   email = "mlysy@uwaterloo.ca", role = c("aut", "cre"))
 Description: A test package containing source code linked with 'Rcpp' along with a few 'TMB' models.  Tested to pass 'R CMD check --as-cran' on Unix and Windows environments.
 License: GPL (>= 2)
-Imports: Rcpp (>= 1.0.0), TMB
+Imports: Rcpp (>= 1.0.0), TMB, utils
 LinkingTo: Rcpp, RcppEigen, TMB
 Suggests: testthat, numDeriv
 RoxygenNote: 6.1.1

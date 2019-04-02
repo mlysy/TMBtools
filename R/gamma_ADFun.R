@@ -1,7 +1,7 @@
-#' \code{TMB::ADFun} for the gamma likelihood.
+#' Create a \code{TMB::ADFun} object for the gamma likelihood.
 #'
 #' @param x Vector of observations.
-#' @return A list as returned by \code{TMB::MakeADFun} representing the negative loglikelihood of a gamma distribution
+#' @return A list as returned by \code{TMB::MakeADFun} representing the negative loglikelihood of a gamma distribution.
 #' @export
 gamma_ADFun <- function(x) {
   TMB::MakeADFun(data=list(x=x),parameters=list(alpha=1,beta=1),

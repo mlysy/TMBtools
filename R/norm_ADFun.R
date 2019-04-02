@@ -1,4 +1,4 @@
-#' \code{TMB::ADFun} for the normal negative loglikelihood.
+#' Create a \code{TMB::ADFun} object for the normal likelihood.
 #'
 #' @param x Vector of observations.
 #' @return A list as returned by \code{TMB::MakeADFun} representing the negative loglikelihood of a univariate normal.

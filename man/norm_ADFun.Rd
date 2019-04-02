@@ -2,7 +2,7 @@
 % Please edit documentation in R/norm_ADFun.R
 \name{norm_ADFun}
 \alias{norm_ADFun}
-\title{\code{TMB::ADFun} for the normal negative loglikelihood.}
+\title{Create a \code{TMB::ADFun} object for the normal likelihood.}
 \usage{
 norm_ADFun(x)
 }
@@ -13,5 +13,5 @@ norm_ADFun(x)
 A list as returned by \code{TMB::MakeADFun} representing the negative loglikelihood of a univariate normal.
 }
 \description{
-\code{TMB::ADFun} for the normal negative loglikelihood.
+Create a \code{TMB::ADFun} object for the normal likelihood.
 }

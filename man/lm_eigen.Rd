@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm_eigen.R
 \name{lm_eigen}
 \alias{lm_eigen}
-\title{Calculate some regression output using \code{RcppEigen}.}
+\title{Calculate some regression output using \pkg{RcppEigen}.}
 \usage{
 lm_eigen(y, X)
 }
@@ -20,5 +20,5 @@ List with elements:
 }
 }
 \description{
-Calculate some regression output using \code{RcppEigen}.
+Calculate some regression output using \pkg{RcppEigen}.
 }

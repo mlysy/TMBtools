@@ -1,0 +1,22 @@
+* Edit the help file skeletons in 'man', possibly combining help files
+  for multiple functions.
+* Edit the exports in 'NAMESPACE', and add necessary imports.
+* Put any C/C++/Fortran code in 'src'.
+* If you have compiled code, add a useDynLib() directive to
+  'NAMESPACE'.
+* Run R CMD build to build the package tarball.
+* Run R CMD check to check the package tarball.
+
+Read "Writing R Extensions" for more information.
+
+--- Additional TMB-specific notes ---
+
+* @@use_Rcpp@@Added dummy file 'src/init.cpp' to avoid problems with empty 'src'.
+  You may delete this file once any C/C++ source files are added to the package.
+  
+* '@@usedl_pkg@@' _must_ preceed
+  '@@usedl_tmb@@' in 'NAMESPACE' file.
+  
+  With 'roxygen2' this is achieved with:
+
+  @rawNamespace @@usedl_pkg@@; @@usedl_tmb@@
