@@ -4,20 +4,25 @@
 #' @param model_files Character vector of header files relative to \code{src/TMB} listing the \pkg{TMB} models to export.  If missing defaults to all \code{hpp} files in \code{src/TMB}.  \strong{Note:} Always use forward slash "/" to separate directories, even on Windows.
 #' @return Invisible; called for its side effects.
 #'
-#' @details \pkg{TMB} models should be saved as C++ header files of the form \code{src/TMB/*.hpp}, and written almost exactly as with usual \pkg{TMB} \code{*.cpp} models.  So for example, \code{src/TMB/ModelA.hpp} might be written as:
+#' @details \pkg{TMB} models should be saved as C++ header files of the form \code{src/TMB/*.hpp}, and written almost exactly as with usual \pkg{TMB} \code{*.cpp} models.  So for example, \code{src/TMB/ModelA.hpp} would be written as:
 #' \preformatted{
 #' // __DO NOT__ '#include <TMB.hpp>' as file is not include-guarded
 #'
 #' #undef TMB_OBJECTIVE_PTR
 #' #define TMB_OBJECTIVE_PTR obj
+#'
+#' // name of function _must_ match file name (ModelA)
 #' template<class Type>
 #' Type ModelA(objective_function<Type>* obj) {
+#'
 #'   // _exactly_ the same code as for usual 'ModelA.cpp'
+#'
 #' }
+#'
 #' #undef TMB_OBJECTIVE_PTR
 #' #define TMB_OBJECTIVE_PTR this
 #' }
-#' The function \code{TMB_export} creates a file \code{src/TMB/pkgname_TMBExports.cpp} containing a single \pkg{TMB} model object which dispatches the appropriate \code{ModelA.hpp}, \code{ModelB.hpp}, etc. using \code{if/else} statements.  At the \R level, the correct model is invoked from \code{TMB::MakeADFun} exactly as for a single \pkg{TMB} model, except the \code{data} list argument gets appended the value e.g., \code{model_name = "ModelA"}.
+#' The function \code{export_models} creates a file \code{src/TMB/pkgname_TMBExports.cpp} containing a single \pkg{TMB} model object which dispatches the appropriate \code{ModelA.hpp}, \code{ModelB.hpp}, etc. using \code{if/else} statements.  At the \R level, the correct model is invoked from \code{TMB::MakeADFun} exactly as for a single \pkg{TMB} model, except the \code{data} list argument gets an additional element \code{model_name} specifying the name of the model, e.g., \code{model_name = "ModelA"}.
 #' @export
 export_models <- function(pkg = ".", model_files) {
   root <- .package_root(pkg)

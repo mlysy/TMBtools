@@ -52,6 +52,8 @@ tmb_package_skeleton <- function(name = "anRpackage",
   env <- parent.frame(1)
   dummy_name <- basename(tempfile("package_skeleton_dummy_object_"))
   assign(dummy_name, function() {}, envir = env)
+  # make sure dummy object gets deleted
+  on.exit(rm(list = dummy_name, envir = env))
   call <- match.call()
   call[[1]] <- quote(utils::package.skeleton)
   call <- call[ c(1L, which(names(call) %in% names(formals(utils::package.skeleton)))) ]
@@ -59,8 +61,7 @@ tmb_package_skeleton <- function(name = "anRpackage",
     stop("error while calling `package.skeleton` : ", conditionMessage(e))
   })
   root <- file.path(path, name)
-  # remove dummy object
-  rm(list = dummy_name, envir = env)
+  # remove dummy object from package
   unlink(file.path(root, "R", paste0(dummy_name, ".R")))
   # remove R/TMBExports-internal.R if accidentally created
   if(file.exists(x <- file.path(root, "R", paste0(name, "-internal.R")))) {
@@ -93,7 +94,7 @@ tmb_package_skeleton <- function(name = "anRpackage",
 
   # update NAMESPACE file
   nspc <- file.path(root, "NAMESPACE")
-  x <- readLines(.template_files("NAMESPACE"))
+  x <- readLines(.template_file("NAMESPACE"))
   if(getRversion() >= "3.4.0") {
     usedl <- sprintf("useDynLib(%s, .registration=TRUE)", name)
   } else {
@@ -125,8 +126,8 @@ tmb_package_skeleton <- function(name = "anRpackage",
     message("Added 'cpp_files' to 'src'...")
   } else {
     # include a dummy file, otherwise useDynLib(name) will fail.
-    init_file <- file.path(root, "src", "init.cpp")
-    x <- readLines(.template_file("init.cpp"))
+    init_file <- file.path(root, "src", "init_dummy_file.cpp")
+    x <- readLines(.template_file("init_dummy_file.cpp"))
     x <- gsub("@@pkg@@", name, x)
     x <- sub("@@usedl_pkg@@", usedl[1], x)
     cat(x, sep = "\n", file = init_file)

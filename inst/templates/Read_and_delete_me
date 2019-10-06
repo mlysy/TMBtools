@@ -11,8 +11,8 @@ Read "Writing R Extensions" for more information.
 
 --- Additional TMB-specific notes ---
 
-* @@use_Rcpp@@Added dummy file 'src/init.cpp' to avoid problems with empty 'src'.
-  You may delete this file once any C/C++ source files are added to the package.
+* @@use_Rcpp@@Added placeholder file 'src/init_dummy_file.cpp' to avoid problems with empty 'src'.
+  You _must_ delete this file once any C/C++ source files are added to the package.
   
 * '@@usedl_pkg@@' _must_ preceed
   '@@usedl_tmb@@' in 'NAMESPACE' file.
