@@ -36,5 +36,5 @@ Type ModelA(objective_function<Type>* obj) {
 #undef TMB_OBJECTIVE_PTR
 #define TMB_OBJECTIVE_PTR this
 }
-The function \code{export_models} creates a file \code{src/TMB/pkgname_TMBExports.cpp} containing a single \pkg{TMB} model object which dispatches the appropriate \code{ModelA.hpp}, \code{ModelB.hpp}, etc. using \code{if/else} statements.  At the \R level, the correct model is invoked from \code{TMB::MakeADFun} exactly as for a single \pkg{TMB} model, except the \code{data} list argument gets an additional element \code{model_name} specifying the name of the model \code{model_name = "ModelA"}.
+The function \code{export_models} creates a file \code{src/TMB/pkgname_TMBExports.cpp} containing a single \pkg{TMB} model object which dispatches the appropriate \code{ModelA.hpp}, \code{ModelB.hpp}, etc. using \code{if/else} statements.  At the \R level, the correct model is invoked from \code{TMB::MakeADFun} exactly as for a single \pkg{TMB} model, except the \code{data} list argument gets an additional element \code{model} specifying the name of the model, e.g., \code{model = "ModelA"}.
 }
