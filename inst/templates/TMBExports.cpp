@@ -6,7 +6,7 @@
 
 template<class Type>
 Type objective_function<Type>::operator() () {
-  DATA_STRING(model_name);
+  DATA_STRING(model);
   @@switches@@
   return 0;
 }
