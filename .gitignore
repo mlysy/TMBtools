@@ -1,0 +1,14 @@
+# template .gitignore for R packages
+
+# R
+*.Rhistory
+*.Rapp.history
+vignettes/.build.timestamp
+
+# C++
+*.o
+*.so
+*.dll
+
+# osx
+*.DS_Store

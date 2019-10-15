@@ -2,8 +2,8 @@
 
 export(export_models)
 export(gamma_ADFun)
-export(lm_eigen)
+export(hadamard)
 export(norm_ADFun)
 export(tmb_package_skeleton)
 importFrom(Rcpp,evalCpp)
-useDynLib(RcppTMBTest); useDynLib(TMBMain); useDynLib(NormNLL); useDynLib(GammaNLL)
+useDynLib(TMBtools); useDynLib(TMBtools_TMBExports)
