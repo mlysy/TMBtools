@@ -10,9 +10,9 @@ Description: Currently just provides functions for creating R packages containin
 License: GPL (>= 2)
 Imports: 
     Rcpp (>= 1.0.0),
-    TMB (>= 1.7.15),
     usethis,
-    withr
+    withr,
+    TMB (>= 1.7.15)
 LinkingTo: 
     Rcpp,
     TMB
