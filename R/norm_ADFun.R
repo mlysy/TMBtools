@@ -4,7 +4,7 @@
 #' @return A list as returned by \code{TMB::MakeADFun} representing the negative loglikelihood of a univariate normal.
 #' @export
 norm_ADFun <- function(x) {
-  TMB::MakeADFun(data = list(model = "NormNLL", x = x),
+  TMB::MakeADFun(data = list(model = "NormalNLL", x = x),
                  parameters = list(mu = 0, sigma = 1),
                  DLL = "TMBtools_TMBExports", silent = TRUE)
 }

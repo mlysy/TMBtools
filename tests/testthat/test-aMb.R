@@ -48,7 +48,7 @@ get_dclists <- function(hname, a, M, b, n) {
   # R grad/hess
   ghlist <- c(list(x = unlist(vlist[vtypes == "p"], use.names = FALSE)),
               fdata[vtypes == "d"])
-  list(data = c(model_name = hname, odata), parameters = opars,
+  list(data = c(model = hname, odata), parameters = opars,
        nl = fdata, gh = ghlist, ad = vlist[vtypes == "p"])
 }
 
@@ -66,7 +66,7 @@ for(hname in hnames) {
       dcl <- get_dclists(hname, a, M, b, n)
       aMb_obj <- TMB::MakeADFun(data = dcl$data,
                                 parameters = dcl$parameters,
-                                DLL = "TMBMain", silent = TRUE)
+                                DLL = "TMBtools_TMBExports", silent = TRUE)
       # in R
       ll1 <- do.call(aMb_fun, dcl$nl)
       gg1 <- do.call(numDeriv::grad, c(func = aMb_fun_pd, dcl$gh, n = n))

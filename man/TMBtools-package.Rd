@@ -4,12 +4,12 @@
 \name{TMBtools-package}
 \alias{TMBtools}
 \alias{TMBtools-package}
-\title{Tootls for developing \R packages interfacing with \pkg{TMB}.}
+\title{Tools for developing \R packages interfacing with \pkg{TMB}.}
 \description{
 Currently just provides functions for creating R packages containing 'TMB' source code.
 }
 \details{
-Currently, the packages provides two main functions \code{\link{tmb_package_skeleton}} and \code{export_models}, for creating packages containing \pkg{TMB} source code, and updating the package's compile instructions when new \pkg{TMB} models are added.  Please see walkthrough in \code{vignette(p = "TMBtools")}.
+Currently, the packages provides two main functions \code{\link{tmb_create_package}} and \code{\link{export_models}}, for creating packages containing \pkg{TMB} source code, and updating the package's compile instructions when new \pkg{TMB} models are added.  Please see walkthrough in \code{vignette(p = "TMBtools")}.
 }
 \author{
 \strong{Maintainer}: Martin Lysy \email{mlysy@uwaterloo.ca}

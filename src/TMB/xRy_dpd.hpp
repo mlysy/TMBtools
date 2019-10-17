@@ -1,7 +1,7 @@
 #ifndef xRy_dpd_hpp
 #define xRy_dpd_hpp 1
 
-#include "MatrixIP.hpp"
+#include "TMBtools/MatrixIP.hpp"
 
 #undef TMB_OBJECTIVE_PTR
 #define TMB_OBJECTIVE_PTR obj

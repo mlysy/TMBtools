@@ -11,19 +11,7 @@
 #' @param example_code If \code{TRUE}, example \pkg{TMB} source code is added to the package.
 #'
 #' @details The created package is compatible with \pkg{roxygen2}-style documentation.  That is, a package passing \code{R CMD check --as-cran} is created out-of-the-box upon running the code in \strong{Examples}.
-#' @examples
-#' \dontrun{
-#' # create package with example code
-#' tmb_package_skeleton(name = "TMBTestPackage", example_code = TRUE)
-#'
-#' # for the following steps must have devtools package installed
-#' setwd("TMBTestPackage")
-#' # need to create shared library before running devtools::document()
-#' pkgbuild::compile_dll()
-#' devtools::document()
-#' # essentially equivalent to R CMD check --as-cran
-#' devtools::check()
-#' }
+#' @example examples/tmb_package_skeleton.R
 #' @export
 tmb_package_skeleton <- function(name = "anRpackage",
                                  list = character(),

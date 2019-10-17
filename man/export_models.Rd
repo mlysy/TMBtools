@@ -4,12 +4,10 @@
 \alias{export_models}
 \title{Create C++ code to export \pkg{TMB} models from package.}
 \usage{
-export_models(pkg = ".", model_files)
+export_models(pkg = ".")
 }
 \arguments{
 \item{pkg}{Character string: any subdirectory of the package source code.}
-
-\item{model_files}{Character vector of header files relative to \code{src/TMB} listing the \pkg{TMB} models to export.  If missing defaults to all \code{hpp} files in \code{src/TMB}.  \strong{Note:} Always use forward slash "/" to separate directories, even on Windows.}
 }
 \value{
 Invisible; called for its side effects.
@@ -37,4 +35,13 @@ Type ModelA(objective_function<Type>* obj) {
 #define TMB_OBJECTIVE_PTR this
 }
 The function \code{export_models} creates a file \code{src/TMB/pkgname_TMBExports.cpp} containing a single \pkg{TMB} model object which dispatches the appropriate \code{ModelA.hpp}, \code{ModelB.hpp}, etc. using \code{if/else} statements.  At the \R level, the correct model is invoked from \code{TMB::MakeADFun} exactly as for a single \pkg{TMB} model, except the \code{data} list argument gets an additional element \code{model} specifying the name of the model, e.g., \code{model = "ModelA"}.
+
+\code{export_models} assumes that each file of the form \code{src/TMB/*.hpp} contains \emph{exactly one} \pkg{TMB} model.  In order for these to \code{#include} additional \code{.hpp} files, these additional files must be placed either in a subfolder of \code{src/TMB}, or in (a subfolder of) \code{inst/include}.  The advantage of the latter approach is that the additional files are available to other \R packages via \code{LinkingTo: pkgname} is the other package's \code{DESCRIPTION}.  If the latter approach is used, the \code{TMB} compiler must be notified of the additional include directory.  This is done by setting the \code{TMB_FLAGS} in \code{src/Makevars[.win]} to
+\preformatted{
+TMB_FLAGS = -I"../../inst/include"
+}
+Other flags specific to the \pkg{TMB} compiler can be set here as well, as can the usual \code{CXX_FLAGS}, etc. for other source code in \code{src}, which is compiled independently of that in \pkg{src/TMB}.
+}
+\seealso{
+\code{\link{use_tmb}}
 }

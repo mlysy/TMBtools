@@ -12,3 +12,6 @@ vignettes/.build.timestamp
 
 # osx
 *.DS_Store
+inst/doc
+doc
+Meta
