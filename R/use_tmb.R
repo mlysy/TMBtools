@@ -58,29 +58,6 @@ use_tmb <- function() {
   }
   # update Namespace directives
   add_tmb_namespace(root, pkg, dynlibs)
-  ## if(!any(file.exists(file.path(root, "R",
-  ##                               paste0(pkg, c(".R", "-package.R")))))) {
-  ##   # create a default usethis namespace
-  ##   use_template(template = "package.R", package = "TMBtools",
-  ##                save_as = file.path("R", paste0(pkg, "-package.R")),
-  ##                data = list(usedl = use_dynlib(dynlibs)))
-  ##   # add Namespace file (probably only for tmb_create_package)
-  ##   if(!file.exists(file.path(root, "NAMESPACE"))) {
-  ##     use_template(template = "NAMESPACE", package = "TMBtools",
-  ##                  data = list(usedl = use_dynlib(dynlibs)))
-  ##   }
-  ##   ui_done("Done!")
-  ## } else {
-  ##   ui_done("Done!")
-  ##   ui_todo("Add the following line to the NAMESPACE file:\n")
-  ##   message("")
-  ##   ui_line(use_dynlib(dynlibs))
-  ##   message("")
-  ##   ui_todo("If the package is roxygen-enabled, do so as follows:")
-  ##   message()
-  ##   ui_code_block(paste0("#' @rawNamespace ", use_dynlib(dynlibs)))
-  ##   message("")
-  ## }
   if(add_init) {
     ui_todo("Delete {ui_path('src/init_dummy_file.cpp')} if C++ files are later added to {ui_path('src')}.")
   }

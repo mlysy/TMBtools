@@ -1,0 +1,264 @@
+---
+title: "Getting Started with **TMBtools**"
+author: "Martin Lysy"
+date: "`r Sys.Date()`"
+params:
+  local_pkg: FALSE
+  reinstall: FALSE
+output: 
+  rmarkdown::html_vignette:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Getting Started with TMBtools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+\newcommand{\bm}[1]{\boldsymbol{#1}}
+\newcommand{\xx}{\bm{x}}
+\newcommand{\zz}{\bm{z}}
+\newcommand{\tth}{\bm{\theta}}
+\newcommand{\N}{\mathcal N}
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+
+<style>
+.column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+<!-- .column-center{ -->
+<!--   display: inline-block; -->
+<!--   width: 33%; -->
+<!--   text-align: center; -->
+<!-- } -->
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: right;
+}
+</style>
+
+```{r setup, include = FALSE}
+# knitr options
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+# package links
+pkg_link <- function(pkg, link) {
+  if(link == "github") {
+    link <- paste0("https://github.com/mlysy/", pkg)
+  } else if(link == "cran") {
+    link <- paste0("https://CRAN.R-project.org/package=", pkg)
+  }
+  paste0("[**", pkg, "**](", link, ")")
+}
+
+# tmb system files
+tmb_sysfile <- function(...) {
+  system.file("templates", ..., package = "TMBtools")
+}
+
+
+if(params$local_pkg) {
+  tmbdir <- "/Users/mlysy/Documents/R/test/TMB"
+} else {
+  # install package to temporary folder
+  tmbdir <- tempfile(pattern = "TMBtools_vignette")
+}
+pkgname <- "MyTMBPackage"
+```
+
+## Overview
+
+`r pkg_link("TMB", "cran")` is an **R** package providing a convenient interface to the `r pkg_link("CppAD", "https://coin-or.github.io/CppAD/doc/cppad.htm")` **C++** library for [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation).  More specifically for the purpose of statistical inference, **TMB** provides an automatic and extremely efficient implementation of the [Laplace's method](https://en.wikipedia.org/wiki/Laplace%27s_method) to approximately integrate out the latent variables of a model $p(\xx \mid \tth) = \int p(\xx, \zz \mid \tth) \, \mathrm{d} \zz$ via numerical optimization.  **TMB** is extensively [documented](http://kaskr.github.io/adcomp/_book/Introduction.html), and numerous [examples](http://kaskr.github.io/adcomp/_book/Examples.html#example-overview) indicate that it can be used to effectively handle tens to thousands of latent variables in a model.
+
+**TMB** was designed for users to compile and save standalone statistical models.  Distributing one or more **TMB** models as part of an **R** package requires a nontrivial compilation process (`Makevars[.win]`), and some amount of boilerplate code.  Thus, the purpose of **TMBtools** is to provide helper functions for the development of **R** packages which contain **TMB** source code.  The main package functions are:
+
+- `tmb_create_package()`, which creates an **R** package infrastructure with the proper **TMB** compile instructions.
+
+- `use_tmb()`, which adds **TMB** functionality to an existing package.
+
+- `export_models()`, which updates the package's **TMB** compile instructions when new models are added to the package.
+
+**Note to Developers:** While **TMBtools** depends on a number of packages to facilitate its work, none of these dependencies are passed on to your package, except **TMB** itself.
+
+## Quickstart
+
+Let's start with the canonical example of the model univariate normal model $x_1, \ldots, x_n \iid \N(\mu, \sigma)$.  The **TMB** C++ file for creating the negative loglikelihood for this model is given below:
+```{r, echo = FALSE, results = "asis"}
+cat("```cpp",
+    readLines("NormalNLL.cpp"),
+    "```", sep = "\n")
+```
+For including this model in a package using **TMBtools**, the code must be modified slightly:
+
+```{r, echo = FALSE, results = "asis"}
+cat("```cpp",
+    readLines(tmb_sysfile("NormalNLL.hpp")),
+    "```", sep = "\n")
+```
+Most of the changes can be easily spotted, but a few deserving special attention are outlined below:
+
+- In the package, **TMB** models should be in `.hpp` header files as opposed to `.cpp` main files.
+
+- At the time of this writing, **never `#include <TMB.h>` in the header files**.   The reason is that this file is not [include-guarded](https://en.wikipedia.org/wiki/Include_guard), so if the package has multiple model files the C++ compiler will complain.
+
+- The name of the model specified inside the `.hpp` file must *exactly match* the name of the `.hpp` file itself (in this case, `NormalNLL`).  Otherwise, **TMBtools** won't be able to find it.
+
+### Creating an R Package
+
+In order to create an **R**/**TMB** package containing `NormalNLL.hpp`, we can use `tmb_create_package()` as follows:
+
+```{r, eval = FALSE}
+# in a directory where you want to create the package, which also contains NormalNLL.hpp
+TMBtools::tmb_create_package("MyTMBPackage",
+                             tmb_files = "NormalNLL.hpp")
+```
+```{r, echo = FALSE}
+if(!params$local_pkg || params$reinstall) {
+  TMBtools::tmb_create_package(file.path(tmbdir, pkgname),
+                               tmb_files = "NormalNLL.hpp", open = FALSE)
+}
+```
+This creates a package that is ready to use right out-of-the-box.  In other words, we now run
+```{r, eval = FALSE}
+devtools::install() # must have devtools installed
+```
+```{r, include = FALSE}
+if(params$local_pkg) {
+  if(params$reinstall) {
+    devtools::install(file.path(tmbdir, pkgname))
+  }
+  ## suppressMessages(require(MyTMBPackage))
+} else {
+  pkgbuild::compile_dll(file.path(tmbdir, pkgname))
+  devtools::load_all(file.path(tmbdir, pkgname))
+}
+```
+Once the package is installed, we can use its **TMB** models very similarly as we would for standalone models:
+```{r}
+# might have to quit & restart R first, then
+# require(MyTMBPackage) 
+
+# create the negative loglikelihood object
+x <- rnorm(100) # data
+normal_nll <- TMB::MakeADFun(data = list(model = "NormalNLL", x = x),
+                             parameters = c(mu = 0, sigma = 1),
+                             DLL = "MyTMBPackage_TMBExports", silent = TRUE)
+
+# call the function and its gradients
+theta <- list(mu = -1, sigma = 2) # parameter values
+normal_nll$fn(theta) # negative loglikelihood at theta
+-sum(dnorm(x, mean = theta$mu, sd = theta$sigma, log = TRUE)) # R check
+normal_nll$gr(theta) # nll gradient at theta
+normal_nll$he(theta) # hessian at theta
+```
+The notable differences from standalone usage are are:
+
+- The `data` argument to `TMB::MakeADFun()` has an additional argument `model` to specify which package model to use.  Thus we could have different model files `ModelA.hpp`, `ModelB.hpp`, etc., each with their own set of arguments, and we just pick the one to use when the `TMB::MakeADFun()` object is instantiated.
+
+- The `DLL` argument to `TMB::MakeADFun()` must be of the form `{PackageName}_TMBExports`, where `{PackageName}` is the name of the package in which the **TMB** models are to be looked for.
+
+## Adding **TMB** Files
+
+Suppose we wish to add a **TMB** model to the package contained in `NewModel.hpp`.  The simplest way to add this model to **MyTMBPackage** is as follows:
+
+1.  Copy `NewModel.hpp` to `MyTMBPackage/src/TMB`.
+
+2.  Run the command
+
+    ```{r, eval = FALSE}
+    TMBtools::export_models()
+    ```
+
+	from within **MyTMBPackage** or any of its subfolders.
+
+3.  Recompile the package.
+
+### Additional `#include` Directives
+
+`TMBtools::export_models()` will assume that all `.hpp` files in `src/TMB` correspond to **TMB** models, and `#include`s each of them into a single standalone-type meta-model file `src/TMB/MyTMBPackage_TMBExports.cpp`, which contains `if/else` switches to select between the individual **TMB** models.  For example, the meta-model file might look like this:
+```{r, echo = FALSE, results = "asis"}
+cat("```cpp",
+    readLines("MyTMBPackage_TMBExports.cpp"),
+    "```", sep = "\n")
+```
+
+This approach works fine when each **TMB** model is contained in a single `.hpp` file.  For a larger project it might be desirable to use the **C++** `#include` mechanism to organize things.
+
+So let's suppose that `src/TMB/ModelA.hpp` wants to `#include` file `helper.hpp`.  One way to do this is to store it in the package-level subdirectory `inst/include/MyTMBPackage`.  For this to work, we need to tell the **TMB** compiler where to look, which is achieved through the packages `src/Makevars[.win]` file:
+
+
+```{r, echo = FALSE, results = "asis"}
+cat("```bash",
+    readLines(tmb_sysfile("Makevars")),
+    "```", sep = "\n")
+```
+The relevant line is that which begins with `## TMB_FLAGS`.  Indeed, this variable can be used to pass additional flags to the **TMB** compiler.  A common application is to use
+
+```bash
+TMB_FLAGS = -I"../../inst/include"
+```
+
+To tell the **TMB** compiler to also look for `.hpp` (or other) files in any subdirectory of `inst/include`.  To summarize, `#include`ing `helper.hpp` in `src/TMB/ModelA.hpp` is accomplished in the following steps:
+
+1.  Copy `helper.hpp` to `inst/include/MyTMBPackage`.
+2.  Add the `TMB_FLAGS` above to both `src/Makevars` and `src/Makevars.win`.
+3.  Add the following line to `src/TMB/ModelA.hpp`:
+
+    ```cpp
+    #include "MyTMBPackage/helper.hpp"
+    ```
+
+We may note that a slightly simpler alternative is to add `helper.hpp` to e.g., `src/TMB/include`, such that the `#include` directive in `ModelA.hpp` becomes 
+```cpp
+#include "include/helper.hpp"
+```
+The advantage of this approach is that the `src/Makevars[.win]` files don't need to be modified.  However, the advantage of the first approach is that storing files in `inst/include` makes them available to developers wanting to `#include` them in other **R**/**TMB** packages, for which the mechanism is to add 
+```
+LinkingTo: MyTMBPackage
+``` 
+In the other package's `DESCRIPTION` file.  See [here](http://r-pkgs.had.co.nz/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information.
+
+```{r cleanup, include = FALSE}
+if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE)
+```
+
+<!-- Suppose we wish to add a **TMB** model for the Gamma model $x_1, \ldots, x_n \iid \mathrm{Gamma}(\alpha, \beta)$.  The header file for this model is: -->
+<!-- ```{r, echo = FALSE, results = "asis"} -->
+<!-- cat("```cpp", -->
+<!--     readLines(tmb_sysfile("GammaNLL.hpp")), -->
+<!--     "```", sep = "\n") -->
+<!-- ``` -->
+<!-- The simplest way to add `GammaNLL.hpp` to **MyTMBPackage** is as follows: -->
+
+<!-- 1.  Copy `GammaNLL.hpp` to `MyTMBPackage/src/TMB`. -->
+
+<!-- 2.  Run the command -->
+
+<!--     ```{r, eval = FALSE} -->
+<!--     TMBtools::export_models() -->
+<!--     ``` -->
+
+<!-- 	from within **MyTMBPackage** or any of its subfolders. -->
+
+<!-- 3.  Recompile the package. -->
+
+<!-- ### Additional `#include` Directives -->
+
+<!-- This workflow is fine when you have a couple of standalone `.hpp` model files.  For model files which `#include` other files, a different approach is needed.  To describe it, let's take a look at the default **TMB** compile instructions provided in the `Makevars` file: -->
+
+<!-- ```{r, echo = FALSE, results = "asis"} -->
+<!-- cat("```bash", -->
+<!--     readLines(tmb_sysfile("Makevars")), -->
+<!--     "```", sep = "\n") -->
+<!-- ``` -->
+<!-- The relevant line is that which begins with `## TMB_FLAGS`.  Indeed, this variable can be used to pass additional flags to the **TMB** compiler.  A common application is to use -->
+
+<!-- ```bash -->
+<!-- TMB_FLAGS = -I"../../inst/include" -->
+<!-- ``` -->
+
+<!-- To tell the **TMB** compiler to also look for `.hpp` (or other) files in the package's `inst/include` directory.  This is particularly useful for developers wanting portions of their **TMB** source to be callable from other **R**/**TMB** packages, for which the mechanism is to add `LinkingTo: MyTMBPackage` in the other package's `DESCRIPTION` file.  See [here](http://r-pkgs.had.co.nz/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information. -->

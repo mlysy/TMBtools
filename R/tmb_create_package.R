@@ -33,7 +33,7 @@ tmb_create_package <- function(path,
     # open = FALSE avoids an error
     pkgdir <- usethis::create_package(path = path, fields = fields,
                                       rstudio = rstudio,
-                                      check_name = check_name,
+                                      ## check_name = check_name,
                                       open = FALSE)
   })
   setwd(pkgdir)

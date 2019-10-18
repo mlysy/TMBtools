@@ -6,7 +6,7 @@ Date: 2019-10-14
 Authors@R: person("Martin", "Lysy",
                   email = "mlysy@uwaterloo.ca",
 		  role = c("aut", "cre"))
-Description: Currently just provides functions for creating R packages containing 'TMB' source code.
+Description: Provides helper functions for creating packages which contain 'TMB' source code.
 License: GPL (>= 2)
 Imports: 
     Rcpp (>= 1.0.0),
