@@ -226,9 +226,9 @@ LinkingTo: MyTMBPackage
 ``` 
 In the other package's `DESCRIPTION` file.  See [here](http://r-pkgs.had.co.nz/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information.
 
-```{r cleanup, include = FALSE}
-if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE)
-```
+<!-- ```{r cleanup, include = FALSE} -->
+<!-- if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE) -->
+<!-- ``` -->
 
 <!-- Suppose we wish to add a **TMB** model for the Gamma model $x_1, \ldots, x_n \iid \mathrm{Gamma}(\alpha, \beta)$.  The header file for this model is: -->
 <!-- ```{r, echo = FALSE, results = "asis"} -->

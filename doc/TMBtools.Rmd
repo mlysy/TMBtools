@@ -72,7 +72,7 @@ pkgname <- "MyTMBPackage"
 
 ## Overview
 
-`r pkg_link("TMB", "cran")` is an **R** package providing a convenient interface to the `r pkg_link("CppAD", "https://coin-or.github.io/CppAD/doc/cppad.htm")` **C++** library for [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation).  More specifically for the purpose of statistical inference, **TMB** provides an automatic and extremely efficient implementation of the [Laplace's method](https://en.wikipedia.org/wiki/Laplace%27s_method) to approximately integrate out the latent variables of a model $p(\xx \mid \tth) = \int p(\xx, \zz \mid \tth) \, \mathrm{d} \zz$ via numerical optimization.  **TMB** is extensively [documented](http://kaskr.github.io/adcomp/_book/Introduction.html), and numerous [examples](http://kaskr.github.io/adcomp/_book/Examples.html#example-overview) indicate that it can be used to effectively handle tens to thousands of latent variables in a model.
+`r pkg_link("TMB", "cran")` is an **R** package providing a convenient interface to the `r pkg_link("CppAD", "https://coin-or.github.io/CppAD/doc/cppad.htm")` **C++** library for [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation).  More specifically for the purpose of statistical inference, **TMB** provides an automatic and extremely efficient implementation of [Laplace's method](https://en.wikipedia.org/wiki/Laplace%27s_method) to approximately integrate out the latent variables of a model $p(\xx \mid \tth) = \int p(\xx, \zz \mid \tth) \, \mathrm{d} \zz$ via numerical optimization.  **TMB** is extensively [documented](http://kaskr.github.io/adcomp/_book/Introduction.html), and numerous [examples](http://kaskr.github.io/adcomp/_book/Examples.html#example-overview) indicate that it can be used to effectively handle tens to thousands of latent variables in a model.
 
 **TMB** was designed for users to compile and save standalone statistical models.  Distributing one or more **TMB** models as part of an **R** package requires a nontrivial compilation process (`Makevars[.win]`), and some amount of boilerplate code.  Thus, the purpose of **TMBtools** is to provide helper functions for the development of **R** packages which contain **TMB** source code.  The main package functions are:
 
@@ -80,13 +80,17 @@ pkgname <- "MyTMBPackage"
 
 - `use_tmb()`, which adds **TMB** functionality to an existing package.
 
-- `export_models()`, which updates the package's **TMB** compile instructions when new models are added to the package.
+- `export_models()`, which updates the package's **TMB** compile instructions when new models are added.
 
 **Note to Developers:** While **TMBtools** depends on a number of packages to facilitate its work, none of these dependencies are passed on to your package, except **TMB** itself.
 
 ## Quickstart
 
-Let's start with the canonical example of the model univariate normal model $x_1, \ldots, x_n \iid \N(\mu, \sigma)$.  The **TMB** C++ file for creating the negative loglikelihood for this model is given below:
+Let's start with the canonical example of the model univariate normal model
+$$
+x_1, \ldots, x_n \iid \N(\mu, \sigma).
+$$
+The **TMB** C++ file for creating the negative loglikelihood for this model is given below:
 ```{r, echo = FALSE, results = "asis"}
 cat("```cpp",
     readLines("NormalNLL.cpp"),
@@ -188,7 +192,7 @@ cat("```cpp",
 
 This approach works fine when each **TMB** model is contained in a single `.hpp` file.  For a larger project it might be desirable to use the **C++** `#include` mechanism to organize things.
 
-So let's suppose that `src/TMB/ModelA.hpp` wants to `#include` file `helper.hpp`.  One way to do this is to store it in the package-level subdirectory `inst/include/MyTMBPackage`.  For this to work, we need to tell the **TMB** compiler where to look, which is achieved through the packages `src/Makevars[.win]` file:
+So let's suppose that `src/TMB/ModelA.hpp` wants to `#include` file `helper.hpp`.  One way to do this is to store it in the package-level subdirectory `inst/include/MyTMBPackage`.  For this to work, we need to tell the **TMB** compiler where to look, which is achieved through the package's `src/Makevars[.win]` file:
 
 
 ```{r, echo = FALSE, results = "asis"}
@@ -222,9 +226,9 @@ LinkingTo: MyTMBPackage
 ``` 
 In the other package's `DESCRIPTION` file.  See [here](http://r-pkgs.had.co.nz/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information.
 
-```{r cleanup, include = FALSE}
-if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE)
-```
+<!-- ```{r cleanup, include = FALSE} -->
+<!-- if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE) -->
+<!-- ``` -->
 
 <!-- Suppose we wish to add a **TMB** model for the Gamma model $x_1, \ldots, x_n \iid \mathrm{Gamma}(\alpha, \beta)$.  The header file for this model is: -->
 <!-- ```{r, echo = FALSE, results = "asis"} -->

@@ -13,7 +13,7 @@
 
 <meta name="author" content="Martin Lysy" />
 
-<meta name="date" content="2019-10-17" />
+<meta name="date" content="2019-10-21" />
 
 <title>Getting Started with TMBtools</title>
 
@@ -306,7 +306,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Getting Started with <strong>TMBtools</strong></h1>
 <h4 class="author">Martin Lysy</h4>
-<h4 class="date">2019-10-17</h4>
+<h4 class="date">2019-10-21</h4>
 
 
 <div id="TOC">
@@ -341,18 +341,20 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </style>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p><a href="https://CRAN.R-project.org/package=TMB"><strong>TMB</strong></a> is an <strong>R</strong> package providing a convenient interface to the <a href="https://coin-or.github.io/CppAD/doc/cppad.htm"><strong>CppAD</strong></a> <strong>C++</strong> library for <a href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a>. More specifically for the purpose of statistical inference, <strong>TMB</strong> provides an automatic and extremely efficient implementation of the <a href="https://en.wikipedia.org/wiki/Laplace%27s_method">Laplace’s method</a> to approximately integrate out the latent variables of a model <span class="math inline">\(p(\boldsymbol{x}\mid \boldsymbol{\theta}) = \int p(\boldsymbol{x}, \boldsymbol{z}\mid \boldsymbol{\theta}) \, \mathrm{d} \boldsymbol{z}\)</span> via numerical optimization. <strong>TMB</strong> is extensively <a href="http://kaskr.github.io/adcomp/_book/Introduction.html">documented</a>, and numerous <a href="http://kaskr.github.io/adcomp/_book/Examples.html#example-overview">examples</a> indicate that it can be used to effectively handle tens to thousands of latent variables in a model.</p>
+<p><a href="https://CRAN.R-project.org/package=TMB"><strong>TMB</strong></a> is an <strong>R</strong> package providing a convenient interface to the <a href="https://coin-or.github.io/CppAD/doc/cppad.htm"><strong>CppAD</strong></a> <strong>C++</strong> library for <a href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a>. More specifically for the purpose of statistical inference, <strong>TMB</strong> provides an automatic and extremely efficient implementation of <a href="https://en.wikipedia.org/wiki/Laplace%27s_method">Laplace’s method</a> to approximately integrate out the latent variables of a model <span class="math inline">\(p(\boldsymbol{x}\mid \boldsymbol{\theta}) = \int p(\boldsymbol{x}, \boldsymbol{z}\mid \boldsymbol{\theta}) \, \mathrm{d} \boldsymbol{z}\)</span> via numerical optimization. <strong>TMB</strong> is extensively <a href="http://kaskr.github.io/adcomp/_book/Introduction.html">documented</a>, and numerous <a href="http://kaskr.github.io/adcomp/_book/Examples.html#example-overview">examples</a> indicate that it can be used to effectively handle tens to thousands of latent variables in a model.</p>
 <p><strong>TMB</strong> was designed for users to compile and save standalone statistical models. Distributing one or more <strong>TMB</strong> models as part of an <strong>R</strong> package requires a nontrivial compilation process (<code>Makevars[.win]</code>), and some amount of boilerplate code. Thus, the purpose of <strong>TMBtools</strong> is to provide helper functions for the development of <strong>R</strong> packages which contain <strong>TMB</strong> source code. The main package functions are:</p>
 <ul>
 <li><p><code>tmb_create_package()</code>, which creates an <strong>R</strong> package infrastructure with the proper <strong>TMB</strong> compile instructions.</p></li>
 <li><p><code>use_tmb()</code>, which adds <strong>TMB</strong> functionality to an existing package.</p></li>
-<li><p><code>export_models()</code>, which updates the package’s <strong>TMB</strong> compile instructions when new models are added to the package.</p></li>
+<li><p><code>export_models()</code>, which updates the package’s <strong>TMB</strong> compile instructions when new models are added.</p></li>
 </ul>
 <p><strong>Note to Developers:</strong> While <strong>TMBtools</strong> depends on a number of packages to facilitate its work, none of these dependencies are passed on to your package, except <strong>TMB</strong> itself.</p>
 </div>
 <div id="quickstart" class="section level2">
 <h2>Quickstart</h2>
-<p>Let’s start with the canonical example of the model univariate normal model <span class="math inline">\(x_1, \ldots, x_n \stackrel{\mathrm{iid}}{\sim}\mathcal N(\mu, \sigma)\)</span>. The <strong>TMB</strong> C++ file for creating the negative loglikelihood for this model is given below:</p>
+<p>Let’s start with the canonical example of the model univariate normal model <span class="math display">\[
+x_1, \ldots, x_n \stackrel{\mathrm{iid}}{\sim}\mathcal N(\mu, \sigma).
+\]</span> The <strong>TMB</strong> C++ file for creating the negative loglikelihood for this model is given below:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">/// </span><span class="an">@file</span><span class="co"> </span><span class="cv">NormalNLL.cpp</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="pp">#include </span><span class="im">&lt;TMB.h&gt;</span></span>
@@ -403,14 +405,15 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 #&gt; ℹ Copying TMB files...
 #&gt; ✔ Creating &#39;src/&#39;
 #&gt; ✔ Creating &#39;src/TMB/&#39;
+#&gt; ✔ Writing &#39;src/TMB/NormalNLL.hpp&#39;
 #&gt; ℹ Adding TMB infrastructure...
 #&gt; ✔ Writing &#39;src/TMB/compile.R&#39;
 #&gt; ✔ Writing &#39;src/Makevars&#39;
 #&gt; ✔ Writing &#39;src/Makevars.win&#39;
 #&gt; ℹ Updating DESCRIPTION...
 #&gt; ✔ Writing &#39;src/init_dummy_file.cpp&#39;
-#&gt; ✔ Writing &#39;R/MyTMBPackage-package.R&#39;
 #&gt; ✔ Writing &#39;NAMESPACE&#39;
+#&gt; ✔ Writing &#39;R/MyTMBPackage-package.R&#39;
 #&gt; ✔ Done!
 #&gt; ● Delete &#39;src/init_dummy_file.cpp&#39; if C++ files are later added to &#39;src/&#39;.</code></pre>
 <p>This creates a package that is ready to use right out-of-the-box. In other words, we now run</p>
@@ -428,16 +431,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <span id="cb6-10"><a href="#cb6-10"></a><span class="co"># call the function and its gradients</span></span>
 <span id="cb6-11"><a href="#cb6-11"></a>theta &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">mu =</span> <span class="dv">-1</span>, <span class="dt">sigma =</span> <span class="dv">2</span>) <span class="co"># parameter values</span></span>
 <span id="cb6-12"><a href="#cb6-12"></a>normal_nll<span class="op">$</span><span class="kw">fn</span>(theta) <span class="co"># negative loglikelihood at theta</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; [1] 187.0499</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; [1] 184.7452</span></span>
 <span id="cb6-14"><a href="#cb6-14"></a><span class="op">-</span><span class="kw">sum</span>(<span class="kw">dnorm</span>(x, <span class="dt">mean =</span> theta<span class="op">$</span>mu, <span class="dt">sd =</span> theta<span class="op">$</span>sigma, <span class="dt">log =</span> <span class="ot">TRUE</span>)) <span class="co"># R check</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; [1] 187.0499</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; [1] 184.7452</span></span>
 <span id="cb6-16"><a href="#cb6-16"></a>normal_nll<span class="op">$</span><span class="kw">gr</span>(theta) <span class="co"># nll gradient at theta</span></span>
 <span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt;           [,1]     [,2]</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; [1,] -26.77297 24.15865</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; [1,] -27.41022 26.46333</span></span>
 <span id="cb6-19"><a href="#cb6-19"></a>normal_nll<span class="op">$</span><span class="kw">he</span>(theta) <span class="co"># hessian at theta</span></span>
 <span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt;          [,1]     [,2]</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; [1,] 25.00000 26.77297</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a><span class="co">#&gt; [2,] 26.77297 13.76202</span></span></code></pre></div>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; [1,] 25.00000 27.41022</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="co">#&gt; [2,] 27.41022 10.30500</span></span></code></pre></div>
 <p>The notable differences from standalone usage are are:</p>
 <ul>
 <li><p>The <code>data</code> argument to <code>TMB::MakeADFun()</code> has an additional argument <code>model</code> to specify which package model to use. Thus we could have different model files <code>ModelA.hpp</code>, <code>ModelB.hpp</code>, etc., each with their own set of arguments, and we just pick the one to use when the <code>TMB::MakeADFun()</code> object is instantiated.</p></li>
@@ -481,7 +484,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <span id="cb8-21"><a href="#cb8-21"></a>  <span class="cf">return</span> <span class="dv">0</span>;</span>
 <span id="cb8-22"><a href="#cb8-22"></a>}</span></code></pre></div>
 <p>This approach works fine when each <strong>TMB</strong> model is contained in a single <code>.hpp</code> file. For a larger project it might be desirable to use the <strong>C++</strong> <code>#include</code> mechanism to organize things.</p>
-<p>So let’s suppose that <code>src/TMB/ModelA.hpp</code> wants to <code>#include</code> file <code>helper.hpp</code>. One way to do this is to store it in the package-level subdirectory <code>inst/include/MyTMBPackage</code>. For this to work, we need to tell the <strong>TMB</strong> compiler where to look, which is achieved through the packages <code>src/Makevars[.win]</code> file:</p>
+<p>So let’s suppose that <code>src/TMB/ModelA.hpp</code> wants to <code>#include</code> file <code>helper.hpp</code>. One way to do this is to store it in the package-level subdirectory <code>inst/include/MyTMBPackage</code>. For this to work, we need to tell the <strong>TMB</strong> compiler where to look, which is achieved through the package’s <code>src/Makevars[.win]</code> file:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># --- TMB-specific Makevars file ---</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="co">#</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="co"># In principle, TMB model compilation is a completely separate process from</span></span>
@@ -522,6 +525,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>The advantage of this approach is that the <code>src/Makevars[.win]</code> files don’t need to be modified. However, the advantage of the first approach is that storing files in <code>inst/include</code> makes them available to developers wanting to <code>#include</code> them in other <strong>R</strong>/<strong>TMB</strong> packages, for which the mechanism is to add</p>
 <pre><code>LinkingTo: MyTMBPackage</code></pre>
 <p>In the other package’s <code>DESCRIPTION</code> file. See <a href="http://r-pkgs.had.co.nz/src.html">here</a> or <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies">here</a> for more information.</p>
+<!-- ```{r cleanup, include = FALSE} -->
+<!-- if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE) -->
+<!-- ``` -->
 <!-- Suppose we wish to add a **TMB** model for the Gamma model $x_1, \ldots, x_n \iid \mathrm{Gamma}(\alpha, \beta)$.  The header file for this model is: -->
 <!-- ```{r, echo = FALSE, results = "asis"} -->
 <!-- cat("```cpp", -->

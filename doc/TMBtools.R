@@ -96,6 +96,3 @@ cat("```bash",
     readLines(tmb_sysfile("Makevars")),
     "```", sep = "\n")
 
-## ----cleanup, include = FALSE--------------------------------------------
-if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE)
-
