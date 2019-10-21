@@ -107,8 +107,8 @@ As a sanity check, you may create a fully operational example package, i.e., wit
 ```r
 TMBtools::create_tmb_package(path = "path/to/TMBExampleTest",
                              example_code = TRUE,
-							 fields = list(
-                             `Authors@R` = 'person("Your", "Name",
+			     fields = list(
+			     `Authors@R` = 'person("Your", "Name",
                                                    email = "valid@email.com",
                                                    role = c("aut", "cre"))'))
 
@@ -180,6 +180,6 @@ devtools::check_win_devel()
 
 ## TODO
 
-- [ ] Run tests with `openMP` enabled.
 - [ ] Add unit tests for `tmb_create_package()`, `use_tmb()`, and `export_models()`.
+- [ ] Run tests with `OpenMP` enabled.
 - [ ] Add examples for `use_tmb()` and `export_models()`.
