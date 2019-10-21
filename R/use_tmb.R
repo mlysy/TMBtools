@@ -41,12 +41,18 @@ use_tmb <- function() {
   # update DESCRIPTION file
   ui_info("Updating DESCRIPTION...")
   use_silent({
-    usethis::use_package(package = "TMB", type = "LinkingTo",
-                         min_version = TRUE)
-    usethis::use_package(package = "TMB", type = "Imports",
-                         min_version = TRUE)
-    usethis::use_package(package = "TMB", type = "LinkingTo",
-                         min_version = NULL)
+    vers <- paste0(">= ", as.character(utils::packageVersion("TMB")))
+    desc::desc_set_dep(package = "TMB", type = "Imports",
+                       version = vers,
+                       file = file.path(root, "DESCRIPTION"))
+    desc::desc_set_dep(package = "TMB", type = "LinkingTo",
+                       file = file.path(root, "DESCRIPTION"))
+    ## usethis::use_package(package = "TMB", type = "LinkingTo",
+    ##                      min_version = TRUE)
+    ## usethis::use_package(package = "TMB", type = "Imports",
+    ##                      min_version = TRUE)
+    ## usethis::use_package(package = "TMB", type = "LinkingTo",
+    ##                      min_version = NULL)
   })
   ## use_description(fields = list(License = "GPL (>= 2)"))
   if(add_init) {
@@ -61,6 +67,7 @@ use_tmb <- function() {
   if(add_init) {
     ui_todo("Delete {ui_path('src/init_dummy_file.cpp')} if C++ files are later added to {ui_path('src')}.")
   }
+  check_gpl(root)
   invisible(NULL)
 }
 

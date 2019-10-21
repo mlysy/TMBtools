@@ -10,9 +10,13 @@ Description: Provides helper functions for creating packages which contain 'TMB'
 License: GPL (>= 2)
 Imports: 
     Rcpp (>= 1.0.0),
+    TMB (>= 1.7.15),
     usethis,
     withr,
-    TMB (>= 1.7.15)
+    fs,
+    desc,
+    utils,
+    rprojroot
 LinkingTo: 
     Rcpp,
     TMB

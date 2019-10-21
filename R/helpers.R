@@ -10,8 +10,12 @@ use_dynlib <- function(dynlibs) {
 # adds a file to the package
 use_file <- function(fl, ...) {
   if(!file.exists(fl)) ui_stop("File {ui_path(fl)} doesn't exist.")
-  file.copy(from = fl,
-            to = file.path(usethis::proj_get(), ..., basename(fl)))
+  path <- file.path(..., basename(fl))
+  success <- file.copy(from = fl,
+                       to = file.path(usethis::proj_get(), path))
+  if(success) {
+    ui_done("Writing {ui_path(path)}")
+  }
 }
 
 # silently executes usethis commands
@@ -25,6 +29,28 @@ use_silent <- function(code) {
 check_needs_init <- function(root) {
   src_files <- dir(path = file.path(root, "src"), full.names = TRUE)
   length(src_files) == 0 || all(dir.exists(src_files))
+}
+
+# check whether license is gpl (>=2) compatible
+check_gpl <- function(root) {
+  lic <- read.dcf(file = file.path(root, "DESCRIPTION"),
+                  fields = "License")[1]
+  if(is.na(lic)) {
+    lic <- FALSE
+  } else {
+    # has a license, check compatibility
+    lic <- toupper(gsub("[[:space:]]+", "", lic))
+    lic <- gsub("(\\|LICENSE|\\|LICENCE)", "", lic)
+    lic <- gsub("[^[:alnum:]]+", "", lic)
+    lic <- lic %in% c("GPL2", "GPL3", "AGPL3")
+  }
+  if(!lic) {
+    ui_todo("{ui_value(get_package(root))} legally requires GPL-2 compatible license to distribute {ui_value('TMB')} code.")
+    ui_line("To enable this set the following in DESCRIPTION:")
+    message("")
+    ui_code_block("License: GPL (>= 2)")
+    message("")
+  }
 }
 
 # identical to usethis::use_template, except:
@@ -62,20 +88,36 @@ check_tmb_generated <- function(tmb_main) {
   }
 }
 
+# check if path is nested in another package
+check_pkg_nested <- function(path) {
+  usethis::local_project(path = path, force = TRUE, quiet = TRUE)
+  pkg <- tryCatch(rprojroot::find_root("DESCRIPTION", path),
+                  error = function(e) NULL)
+  ## currwd <- getwd()
+  ## on.exit(setwd(currwd))
+  ## setwd(path)
+  ## proj <- usethis::proj_get()
+  if(!is.null(pkg)) {
+    ui_stop("{ui_value('usethis::create_package')} cannot create a package inside existing package {ui_value(pkg)}.")
+  }
+}
+
+
 # add TMB specific instructions to NAMESPACE file
 add_tmb_namespace <- function(root, pkg, dynlibs) {
   nsp <- file.path(root, "NAMESPACE")
   # check if the NAMESPACE has the correct dynlibs
-  has_nsp <- rm_white(use_dynlib(dynlibs))
-  has_nsp <- gsub("([.]|\\(|\\))", "\\\\\\1", has_nsp)
-  has_nsp <- file.exists(nsp) &&
-    any(grepl(pattern = paste0("^(", has_nsp, ")$"),
+  has_tmb_nsp <- rm_white(use_dynlib(dynlibs))
+  has_tmb_nsp <- gsub("([.]|\\(|\\))", "\\\\\\1", has_tmb_nsp)
+  has_tmb_nsp <- file.exists(nsp) &&
+    any(grepl(pattern = paste0("^(", has_tmb_nsp, ")$"),
               x = rm_white(readLines(nsp))))
   # check if package uses roxygen
-  has_roxy <- !is.na(read.dcf(file.path(root, "DESCRIPTION"),
-                              fields = "RoxygenNote")[1])
-  if(!has_nsp) {
-    if(!file.exists(nsp)) {
+  has_roxy <- !all(is.na(read.dcf(file.path(root, "DESCRIPTION"),
+                              fields = c("Roxygen", "RoxygenNote"))))
+  if(!has_tmb_nsp) {
+    has_nsp <- file.exists(nsp)
+    if(!has_nsp) {
       # add Namespace file (probably only happens in tmb_create_package)
       use_template(template = "NAMESPACE", package = "TMBtools",
                    data = list(usedl = use_dynlib(dynlibs)))
@@ -91,7 +133,10 @@ add_tmb_namespace <- function(root, pkg, dynlibs) {
                      save_as = file.path("R", paste0(pkg, "-package.R")),
                      data = list(usedl = use_dynlib(dynlibs)))
         ui_done("Done!")
-        ui_todo("run roxygen on package to update NAMESPACE.")
+        if(has_nsp) {
+          # probably only avoided with tmb_create_package
+          ui_todo("Run roxygen on package to update NAMESPACE.")
+        }
       } else {
         # user has to manually update namespace via roxygen
         ui_done("Done!")
@@ -115,3 +160,15 @@ add_tmb_namespace <- function(root, pkg, dynlibs) {
 
 # remove all whitespace from a character vector
 rm_white <- function(x) gsub("[[:space:]]", "", x)
+
+## # similar to usethis::create_package but with fewer options and no prompts
+## create_package <- function(path, fields) {
+##   path <- fs::path_expand(path)
+##   name <- fs::path_file(path)
+##   fs::dir_create(path)
+##   old_project <- usethis::proj_set(path, force = TRUE)
+##   on.exit(usethis::proj_set(old_project), add = TRUE)
+##   use_directory("R")
+##   usethis::use_description(fields)
+##   invisible(usethis::proj_get())
+## }

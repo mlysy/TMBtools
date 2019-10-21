@@ -103,14 +103,38 @@ For more usage details, e.g., how to add new models to an existing package, plea
 
 ## Unit Tests
 
-As a sanity check, you may create a fully operational example package from scratch with:
+As a sanity check, you may create a fully operational example package, i.e., with unit tests passing `R CMD --as-cran check`, with the sample code below.  To run this code you will need to install the packages **devtools**, [**usethis**](https://CRAN.R-project.org/package=usethis), and [**numDeriv**](https://CRAN.R-project.org/package=numDeriv).
 ```r
 TMBtools::create_tmb_package(path = "path/to/TMBExampleTest",
-                             fields = list(Maintainer = "Your Name <valid@emailaddress.com>"),
-							 example_code = TRUE)
-```
-Without any modifications, this package should pass cross-platform CRAN checks.  You can test this by running from within any subfolder of **TMBExampleTest**:
-```r
+                             example_code = TRUE,
+							 fields = list(
+                             `Authors@R` = 'person("Your", "Name",
+                                                   email = "valid@email.com",
+                                                   role = c("aut", "cre"))'))
+
+# R wrapper functions to TMB models
+usethis::use_template(template = "norm_ADFun.R", package = "TMBtools",
+                      save_as = file.path("R", "norm_ADFun.R"),
+                      data = list(pkg = "TMBTestPackage"))
+usethis::use_template(template = "gamma_ADFun.R", package = "TMBtools",
+                      save_as = file.path("R", "gamma_ADFun.R"),
+                      data = list(pkg = "TMBTestPackage"))
+
+# testthat tests
+usethis::use_testthat()
+usethis::use_package(package = "numDeriv", type = "Suggests")
+usethis::use_template(template = "test-norm_ADFun.R", package = "TMBtools",
+                      save_as = file.path("tests", "testthat",
+                                          "test-norm_ADFun.R"))
+usethis::use_template(template = "test-gamma_ADFun.R", package = "TMBtools",
+                      save_as = file.path("tests", "testthat",
+                                          "test-gamma_ADFun.R"))
+
+# update NAMESPACE and package documentation
+pkgbuild::compile_dll() # need to compile src first
+devtools::document()
+
+# essentially equivalent to R CMD --as-cran check
 devtools::check() # on your local platform
 
 # on winbuilder (CRAN's Windows)
@@ -157,3 +181,5 @@ devtools::check_win_devel()
 ## TODO
 
 - [ ] Run tests with `openMP` enabled.
+- [ ] Add unit tests for `tmb_create_package()`, `use_tmb()`, and `export_models()`.
+- [ ] Add examples for `use_tmb()` and `export_models()`.

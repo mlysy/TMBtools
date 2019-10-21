@@ -6,7 +6,7 @@
 \alias{TMBtools-package}
 \title{Tools for developing \R packages interfacing with \pkg{TMB}.}
 \description{
-Currently just provides functions for creating R packages containing 'TMB' source code.
+Provides helper functions for creating packages which contain 'TMB' source code.
 }
 \details{
 Currently, the packages provides two main functions \code{\link{tmb_create_package}} and \code{\link{export_models}}, for creating packages containing \pkg{TMB} source code, and updating the package's compile instructions when new \pkg{TMB} models are added.  Please see walkthrough in \code{vignette(p = "TMBtools")}.
