@@ -9,7 +9,7 @@
 # Flags specifically for the TMB compilation can also be set
 # through the 'TMB_FLAGS' argument below, e.g.,
 #
-TMB_FLAGS = -I"../../inst/include" # add include directory inst/include
+## TMB_FLAGS = -I"../../inst/include" # add include directory inst/include
 #
 # --- TMB-specific compiling directives below ---
 
@@ -19,7 +19,8 @@ all: $(SHLIB)
 $(SHLIB): tmblib
 
 tmblib: 
-	(cd TMB; $(R_HOME)/bin$(R_ARCH_BIN)/Rscript --no-save --no-restore compile.R '$(TMB_FLAGS)')
+	(cd TMB; $(R_HOME)/bin$(R_ARCH_BIN)/Rscript \
+	--no-save --no-restore compile.R '$(TMB_FLAGS)')
 
 clean:
 	rm -rf *.dll *.o TMB/*.dll TMB/*.o

@@ -1,4 +1,4 @@
 library(testthat)
-library(RcppTMBTest)
+library(TMBtools)
 
-test_check("RcppTMBTest")
+test_check("TMBtools")

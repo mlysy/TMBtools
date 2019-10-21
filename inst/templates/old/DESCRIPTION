@@ -1,0 +1,11 @@
+Package: @@PKG@@
+Type: Package
+Title: What the package does (short line)
+Version: 0.0.0.9000
+Date: 2019-03-29
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+LinkingTo: TMB
+License: GPL (>=2)
+Encoding: UTF-8

@@ -1,7 +1,8 @@
-#define TMB_LIB_INIT R_init_NormNLL
-#include <TMB.hpp>
+/// @file NormalNLL.cpp
 
-// negative log-likelihood of the normal distribution
+#include <TMB.h>
+
+/// Negative log-likelihood of the normal distribution.
 template<class Type>
 Type objective_function<Type>::operator() () {
   DATA_VECTOR(x); // data vector

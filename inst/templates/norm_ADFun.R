@@ -6,5 +6,5 @@
 norm_ADFun <- function(x) {
   TMB::MakeADFun(data = list(model = "NormalNLL", x = x),
                  parameters = list(mu = 0, sigma = 1),
-                 DLL = "TMBtools_TMBExports", silent = TRUE)
+                 DLL = "{{pkg}}_TMBExports", silent = TRUE)
 }
