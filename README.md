@@ -71,7 +71,7 @@ Type ModelA(objective_function<Type>* obj) {
 }
 
 #undef TMB_OBJECTIVE_PTR
-#define TMB_OBJECTIVE_PRT this
+#define TMB_OBJECTIVE_PTR this
 ```
 For `ModelA.hpp`, `ModelB.hpp`, etc. similarly defined and in the current directory (`base::getwd()`), the R package containg them is created with:
 ```r
