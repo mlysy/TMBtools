@@ -105,7 +105,7 @@ For more usage details, e.g., how to add new models to an existing package, plea
 
 As a sanity check, you may create a fully operational example package, i.e., with unit tests passing `R CMD --as-cran check`, with the sample code below.  To run this code you will need to install the packages **devtools**, [**usethis**](https://CRAN.R-project.org/package=usethis), and [**numDeriv**](https://CRAN.R-project.org/package=numDeriv).
 ```r
-TMBtools::create_tmb_package(path = "path/to/TMBExampleTest",
+TMBtools::tmb_create_package(path = "path/to/TMBExampleTest",
                              example_code = TRUE,
 			     fields = list(
 			     `Authors@R` = 'person("Your", "Name",
