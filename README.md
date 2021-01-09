@@ -113,12 +113,13 @@ TMBtools::tmb_create_package(path = "path/to/TMBExampleTest",
                                                    role = c("aut", "cre"))'))
 
 # R wrapper functions to TMB models
+# note: data = list(pkg = ...) must match name of package (here TMBExampleTest)
 usethis::use_template(template = "norm_ADFun.R", package = "TMBtools",
                       save_as = file.path("R", "norm_ADFun.R"),
-                      data = list(pkg = "TMBTestPackage"))
+                      data = list(pkg = "TMBExampleTest"))
 usethis::use_template(template = "gamma_ADFun.R", package = "TMBtools",
                       save_as = file.path("R", "gamma_ADFun.R"),
-                      data = list(pkg = "TMBTestPackage"))
+                      data = list(pkg = "TMBExampleTest"))
 
 # testthat tests
 usethis::use_testthat()

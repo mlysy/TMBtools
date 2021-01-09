@@ -4,8 +4,13 @@
 \alias{tmb_create_package}
 \title{Create a \pkg{TMB} package.}
 \usage{
-tmb_create_package(path, tmb_files = character(), fields = NULL,
-  open = interactive(), example_code = FALSE)
+tmb_create_package(
+  path,
+  tmb_files = character(),
+  fields = NULL,
+  open = interactive(),
+  example_code = FALSE
+)
 }
 \arguments{
 \item{path}{Absolute or relative path to where the package is to be created.  If the path exists, it is used. If it does not exist, it is created, provided that the parent path exists.}

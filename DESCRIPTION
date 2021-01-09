@@ -1,8 +1,8 @@
 Package: TMBtools
 Type: Package
 Title: Tools for Developing R Packages Interfacing with 'TMB'
-Version: 0.9
-Date: 2019-10-14
+Version: 0.9.1
+Date: 2021-01-08
 Authors@R: person("Martin", "Lysy",
                   email = "mlysy@uwaterloo.ca",
 		  role = c("aut", "cre"))
@@ -11,7 +11,7 @@ License: GPL (>= 2)
 Imports: 
     Rcpp (>= 1.0.0),
     TMB (>= 1.7.15),
-    usethis,
+    usethis (>= 2.0.0),
     withr,
     fs,
     desc,
@@ -25,8 +25,8 @@ Suggests:
     numDeriv,
     knitr,
     rmarkdown,
-    devtools,
+    devtools (>= 2.3.0),
     pkgbuild
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Encoding: UTF-8
 VignetteBuilder: knitr

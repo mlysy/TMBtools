@@ -90,7 +90,7 @@ check_tmb_generated <- function(tmb_main) {
 
 # check if path is nested in another package
 check_pkg_nested <- function(path) {
-  usethis::local_project(path = path, force = TRUE, quiet = TRUE)
+  usethis::local_project(path = path, force = TRUE, setwd = FALSE, quiet = TRUE)
   pkg <- tryCatch(rprojroot::find_root("DESCRIPTION", path),
                   error = function(e) NULL)
   ## currwd <- getwd()

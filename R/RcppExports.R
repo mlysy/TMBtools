@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 .hadamard <- function(A, B) {
-    .Call('_TMBtools_hadamard', PACKAGE = 'TMBtools', A, B)
+    .Call(`_TMBtools_hadamard`, A, B)
 }
 
