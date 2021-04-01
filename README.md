@@ -134,7 +134,11 @@ usethis::use_template(template = "test-gamma_ADFun.R", package = "TMBtools",
 # update NAMESPACE and package documentation
 pkgbuild::compile_dll() # need to compile src first
 devtools::document()
+```
 
+The last two lines set up all elements of the package, including the TMB C++ code, but without actually installing the package.  The next few lines run the various package checks.  **NOTE:** You must quit + restart R before running these to make sure things work properly on newer versions of R.
+
+```r
 # essentially equivalent to R CMD --as-cran check
 devtools::check() # on your local platform
 
