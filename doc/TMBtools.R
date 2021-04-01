@@ -64,6 +64,8 @@ if(params$local_pkg) {
 } else {
   pkgbuild::compile_dll(file.path(tmbdir, pkgname))
   devtools::load_all(file.path(tmbdir, pkgname))
+  dyn.load(TMB::dynlib(file.path(tmbdir, pkgname,
+                                 "src", paste0(pkgname, "_TMBExports"))))
 }
 
 ## -----------------------------------------------------------------------------

@@ -139,6 +139,8 @@ if(params$local_pkg) {
 } else {
   pkgbuild::compile_dll(file.path(tmbdir, pkgname))
   devtools::load_all(file.path(tmbdir, pkgname))
+  dyn.load(TMB::dynlib(file.path(tmbdir, pkgname,
+                                 "src", paste0(pkgname, "_TMBExports"))))
 }
 ```
 Once the package is installed, we can use its **TMB** models very similarly as we would for standalone models:
