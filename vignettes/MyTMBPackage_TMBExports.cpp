@@ -16,7 +16,7 @@ Type objective_function<Type>::operator() () {
   } else if(model == "ModelC") {
     return ModelC(this);
   } else {
-    error("Unknown model.");
+    Rf_error("Unknown model.");
   }
   return 0;
 }
