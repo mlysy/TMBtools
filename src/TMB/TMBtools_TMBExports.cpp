@@ -28,7 +28,7 @@ Type objective_function<Type>::operator() () {
   } else if(model == "ySx_pdp") {
     return ySx_pdp(this);
   } else {
-    error("Unknown model.");
+    Rf_error("Unknown model.");
   }
   return 0;
 }

@@ -174,7 +174,7 @@ devtools::check_win_devel()
 	  } else if(model == "ModelB") {
 		return ModelB(this);
 	  } else {
-		error("Unknown model.");
+		Rf_error("Unknown model.");
 	  }
 	  return 0;
     }

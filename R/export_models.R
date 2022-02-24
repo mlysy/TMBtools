@@ -56,9 +56,9 @@ export_models <- function(pkg = ".") {
                        '    return ', model_names, '(this);\n',
                        '  }', collapse = ' else ')
     if_lines <- paste0(if_lines, ' else {\n',
-                      '    error("Unknown model.");\n  }')
+                      '    Rf_error("Unknown model.");\n  }')
   } else {
-    if_lines <- '  error("Unknown model.");'
+    if_lines <- '  Rf_error("Unknown model.");'
   }
   use_template(template = "TMBExports.cpp", package = "TMBtools",
                data = list(pkg = pkg_name,
