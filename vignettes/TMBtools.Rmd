@@ -72,7 +72,7 @@ pkgname <- "MyTMBPackage"
 
 ## Overview
 
-`r pkg_link("TMB", "cran")` is an **R** package providing a convenient interface to the `r pkg_link("CppAD", "https://coin-or.github.io/CppAD/doc/cppad.htm")` **C++** library for [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation).  More specifically for the purpose of statistical inference, **TMB** provides an automatic and extremely efficient implementation of [Laplace's method](https://en.wikipedia.org/wiki/Laplace%27s_method) to approximately integrate out the latent variables of a model $p(\xx \mid \tth) = \int p(\xx, \zz \mid \tth) \, \mathrm{d} \zz$ via numerical optimization.  **TMB** is extensively [documented](http://kaskr.github.io/adcomp/_book/Introduction.html), and numerous [examples](http://kaskr.github.io/adcomp/_book/Examples.html#example-overview) indicate that it can be used to effectively handle tens to thousands of latent variables in a model.
+`r pkg_link("TMB", "cran")` is an **R** package providing a convenient interface to the `r pkg_link("CppAD", "https://coin-or.github.io/CppAD/doc/cppad.htm")` **C++** library for [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation).  More specifically for the purpose of statistical inference, **TMB** provides an automatic and extremely efficient implementation of [Laplace's method](https://en.wikipedia.org/wiki/Laplace%27s_method) to approximately integrate out the latent variables of a model $p(\xx \mid \tth) = \int p(\xx, \zz \mid \tth) \, \mathrm{d} \zz$ via numerical optimization.  **TMB** is extensively [documented](https://kaskr.github.io/adcomp/_book/Introduction.html), and numerous [examples](https://kaskr.github.io/adcomp/_book/Examples.html#example-overview) indicate that it can be used to effectively handle tens to thousands of latent variables in a model.
 
 **TMB** was designed for users to compile and save standalone statistical models.  Distributing one or more **TMB** models as part of an **R** package requires a nontrivial compilation process (`Makevars[.win]`), and some amount of boilerplate code.  Thus, the purpose of **TMBtools** is to provide helper functions for the development of **R** packages which contain **TMB** source code.  The main package functions are:
 
@@ -226,7 +226,7 @@ The advantage of this approach is that the `src/Makevars[.win]` files don't need
 ```
 LinkingTo: MyTMBPackage
 ``` 
-In the other package's `DESCRIPTION` file.  See [here](http://r-pkgs.had.co.nz/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information.
+In the other package's `DESCRIPTION` file.  See [here](https://r-pkgs.org/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information.
 
 <!-- ```{r cleanup, include = FALSE} -->
 <!-- if(!params$local_pkg) unlink(file.path(tmbdir), recursive = TRUE) -->
@@ -267,4 +267,4 @@ In the other package's `DESCRIPTION` file.  See [here](http://r-pkgs.had.co.nz/s
 <!-- TMB_FLAGS = -I"../../inst/include" -->
 <!-- ``` -->
 
-<!-- To tell the **TMB** compiler to also look for `.hpp` (or other) files in the package's `inst/include` directory.  This is particularly useful for developers wanting portions of their **TMB** source to be callable from other **R**/**TMB** packages, for which the mechanism is to add `LinkingTo: MyTMBPackage` in the other package's `DESCRIPTION` file.  See [here](http://r-pkgs.had.co.nz/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information. -->
+<!-- To tell the **TMB** compiler to also look for `.hpp` (or other) files in the package's `inst/include` directory.  This is particularly useful for developers wanting portions of their **TMB** source to be callable from other **R**/**TMB** packages, for which the mechanism is to add `LinkingTo: MyTMBPackage` in the other package's `DESCRIPTION` file.  See [here](https://r-pkgs.had.co.nz/src.html) or [here](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies) for more information. -->

@@ -27,6 +27,6 @@ Suggests:
     rmarkdown,
     devtools (>= 2.3.0),
     pkgbuild
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 VignetteBuilder: knitr

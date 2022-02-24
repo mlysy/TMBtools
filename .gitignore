@@ -14,8 +14,5 @@ vignettes/.build.timestamp
 *.DS_Store
 
 # devtools
-doc
-Meta
-
-# github vignette
-!doc
+/doc/
+/Meta/
